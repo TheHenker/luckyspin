@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+        <title>Lucky Spin - Moneypot casino</title>
+
+        <link rel="stylesheet" type="text/css" href="lib/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="lib/css/style.css" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.6/socket.io.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.session.js"></script>
+        <script type="text/javascript" src="lib/js/jquery.fortune.js"></script>
+    </head>
+    <body>
+        <div id="faucetClaimCaptcha"></div>
+
+        <section id="top">
+            <div class="container">
+                <div class="row">
+                    <div id="left-menu" class="col-md-6">
+                        <div id="wheel-col" class="col-md-10 col-lg-10 col-sm-8">
+                            <div class="wheelcont">
+                                <div class="skincss wheel-one wheel-active">
+                                    <img class="wheelimg" src="lib/img/wheel1.png">
+                                </div>
+                                <div class="skincss wheel-two">
+                                    <img class="wheelimg" src="lib/img/wheel2.png">
+                                </div>
+                                <div class="skincss wheel-three">
+                                    <img class="wheelimg" src="lib/img/wheel3.png">
+                                </div>
+                                <div class="skincss wheel-four">
+                                    <img class="wheelimg" src="lib/img/wheel4.png">
+                                </div>
+                            </div>
+                            <div class="spinit">
+                                <span class="button spin-circle">Spin!</span>
+                            </div>
+                        </div>
+                        <div id="skin-col" class="col-md-2 col-lg-2 col-sm-4">
+                            <div class="sound-icon">
+                                <span id="toggleSound"></span>
+                            </div>
+                            <div class="wheel-skins">
+                                <div data-skin="wheel-one" class="skin-one change-skin skin-active"></div>
+                                <div data-skin="wheel-two" class="skin-two change-skin"></div>
+                                <div data-skin="wheel-three" class="skin-three change-skin"></div>
+                                <div data-skin="wheel-four" class="skin-four change-skin"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="right-menu" class="col-md-6">
+                        <div class="sign-in">
+                            <span class="button-stake login_button">Sign In</span>
+                        </div>
+                        <div class="site-branding">
+                            <span class="logo"><img title="Counter Strike: GO - Lucky Wheel" src="lib/img/logo.png"></span>
+                        </div>
+                        <div class="spin-menu">
+                            <div class="spin-details">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="wager">Wager</div>
+                                        <div class="wager-result-div">
+                                            <input id="wager-result" class="blinking" value="1" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div id="multiplier-win" class="label label-success multiplier">2X</div>
+                                        <div id="multiplier-lose" class="label label-danger multiplier">0X</div>
+                                        <div id="multiplier-tie" class="label label-warning multiplier">1X</div>
+                                    </div>
+                                    <div id="balance" class="col-md-4">
+                                        <div class="balance">Balance</div>
+                                        <div class="balance-result">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="stakes">
+                                <table>
+                                    <tr>
+                                        <td><span id="10p" class="button-stake top-line">10%</span></td>
+                                        <td><span id="25p" class="button-stake top-line">25%</span></td>
+                                        <td><span id="50p" class="button-stake top-line">50%</span></td>
+                                        <td><span id="max" class="button-stake top-line">Max</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span id="100" class="button-stake bot-line">100</span></td>
+                                        <td><span id="1000" class="button-stake bot-line">1000</span></td>
+                                        <td><span id="10000" class="button-stake bot-line">10 000</span></td>
+                                        <td><span id="reset" class="button-stake bot-line">Reset</span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="main">
+            <div class="container">
+                <div id="controls-menu" class="row">
+                    <div class="top-menu">
+                        <ul class="user-menu">
+                            <li class="idle deposit-item"><a href="#" id="depositButton">Deposit</a></li>
+                            <li class="idle withdraw-item"><a href="#" id="withdrawButton">Withdraw</a></li>
+                            <li class="idle forums-item">
+                                <a href="#" target="_blank">BitcoinTalk</a>
+                            </li>
+                            <li class="idle highlight earn-item"><a href="#">Faucet</a></li>
+                        </ul>
+
+                        <ul class="user-submenu">
+                            <li class="idle selected" id="allBetsButton"><a>Global Spins</a></li>
+                            <li class="idle" id="myBetsButton"><a>My Spins</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="table-stats" class="row">
+                    <div id="main-page" class="home-spins">
+                        <table class="table-spins">
+                            <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td>Player Name</td>
+                                    <td style="width:80px;">Result</td>
+                                    <td>Bet</td>
+                                    <td>Return</td>
+                                </tr>
+                            </thead>
+                            <tbody id="bet_history">
+                            </tbody>
+                        </table>
+                        <table class="my-table-spins">
+                            <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td style="width:80px;">Result</td>
+                                    <td>Bet</td>
+                                    <td>Return</td>
+                                </tr>
+                            </thead>
+                            <tbody id="mybet_history">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script type="text/javascript" src="lib/js/script.js"></script>
+        <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+    </body>
+</html>
